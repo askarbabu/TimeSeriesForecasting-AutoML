@@ -1,5 +1,5 @@
 import pandas as pd
-from tsLQC.user_input import primary_key
+from user_input import primary_key
 
 
 def preprocessing(timeseries_input_df):
@@ -12,5 +12,3 @@ def preprocessing(timeseries_input_df):
     timeseries_input_df.index = timeseries_input_df.index.astype(int).astype(str)
 
     return timeseries_input_df
-
-print(primary_key)
