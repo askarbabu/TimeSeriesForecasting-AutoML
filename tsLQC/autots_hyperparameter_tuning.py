@@ -1,11 +1,11 @@
 import itertools
 from autots import AutoTS
 
-from tsLQC.template_generation import templateGeneration
+from tsLQC.template_generation import template_generation
 from tsLQC.backtesting_using_growthrate import backtesting
 from tsLQC.constant import params, n_jobs, verbose,  frequency, hp_tuning_models_to_validate, \
     hp_tuning_max_generations, hp_tuning_num_validations, hp_tuning_model_list
-df = templateGeneration()
+df = template_generation()
 
 
 def hyperparameter_tuning(ts, backtest_length):

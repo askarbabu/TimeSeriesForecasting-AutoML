@@ -6,8 +6,8 @@ from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, date_col, 
     validation_method_default, validation_points_default, autots_hyperparameter_tuning, metric_weighting, \
     max_generations, num_validations, models_to_validate
 
-from tsLQC.template_generation import templateGeneration
-df = templateGeneration()
+from tsLQC.template_generation import template_generation
+df = template_generation()
 
 
 def modelling(ts, autots_hyperparameter_tuning=False):
