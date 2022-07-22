@@ -2,7 +2,7 @@ import pandas as pd
 from autots import AutoTS
 from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
-from tsLQC.user_input import autots_hyperparameter_tuning, metric_weighting, \
+from tsLQC.constant import autots_hyperparameter_tuning, metric_weighting, \
     max_generations, num_validations, models_to_validate
 
 from template_generation import templateGeneration

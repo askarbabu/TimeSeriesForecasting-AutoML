@@ -1,4 +1,4 @@
-from tsLQC.user_input import models_with_custom_interval, forecast_period
+from tsLQC.constant import models_with_custom_interval, forecast_period
 from tsLQC.prediction_interval import prediction_interval
 
 

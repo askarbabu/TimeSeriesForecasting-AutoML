@@ -19,5 +19,8 @@ max_generations = 1
 num_validations = 0
 models_to_validate = 0.20
 forecast_period = 48
+
+params = {'validation_points': [4, 6, 8, 10], 'validation_method': ['backward', 'even', 'similarity']}
+
 models_with_custom_interval = ['UnivariateRegression', 'MultivariateRegression', 'ETS',
                                'DatepartRegression', 'SectionalMotif', 'GLM']

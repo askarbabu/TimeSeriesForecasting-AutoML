@@ -3,14 +3,13 @@ from autots import AutoTS
 
 from tsLQC.template_generation import templateGeneration
 from tsLQC.backtesting_using_growthrate import backtesting
-
+from tsLQC.constant import params
 df = templateGeneration()
 
 
 def hyperparameter_tuning(ts, backtest_length):
     print("----------------------------------Hyperparameter Tuning ------------------------------------")
     hyperparams_dict = {}
-    params = {'validation_points': [4, 6, 8, 10], 'validation_method': ['backward', 'even', 'similarity']}
 
     for validation_points, validation_method in itertools.product(*params.values()):
 

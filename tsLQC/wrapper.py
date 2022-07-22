@@ -1,5 +1,5 @@
 import pandas as pd
-from tsLQC.user_input import inputTableLocation, COMPANY_LIST
+from tsLQC.constant import inputTableLocation, COMPANY_LIST
 from tsLQC.preprocess_input import preprocessing
 from tsLQC.execute import train_all_companies
 from tsLQC.plot_forecast import plot_forecast
