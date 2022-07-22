@@ -1,8 +1,8 @@
 import itertools
 from autots import AutoTS
 
-from template_generation import templateGeneration
-from backtesting_using_growthrate import backtesting
+from tsLQC.template_generation import templateGeneration
+from tsLQC.backtesting_using_growthrate import backtesting
 
 df = templateGeneration()
 

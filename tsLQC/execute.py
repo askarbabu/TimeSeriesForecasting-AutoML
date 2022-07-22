@@ -1,9 +1,8 @@
 import pandas as pd
 from autots import AutoTS
-from autots_hyperparameter_tuning import hyperparameter_tuning
+from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
-from tsLQC.user_input import autots_hyperparameter_tuning
-from user_input import metric_weighting, \
+from tsLQC.user_input import autots_hyperparameter_tuning, metric_weighting, \
     max_generations, num_validations, models_to_validate
 
 from template_generation import templateGeneration

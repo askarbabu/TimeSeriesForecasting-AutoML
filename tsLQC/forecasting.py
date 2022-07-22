@@ -1,5 +1,5 @@
-from user_input import models_with_custom_interval, forecast_period
-from prediction_interval import prediction_interval
+from tsLQC.user_input import models_with_custom_interval, forecast_period
+from tsLQC.prediction_interval import prediction_interval
 
 
 def forecasting_function(ts, model):

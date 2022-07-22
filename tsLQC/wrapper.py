@@ -1,8 +1,8 @@
 import pandas as pd
-from user_input import inputTableLocation, COMPANY_LIST
-from preprocess_input import preprocessing
+from tsLQC.user_input import inputTableLocation, COMPANY_LIST
+from tsLQC.preprocess_input import preprocessing
 from tsLQC.execute import train_all_companies
-from plot_forecast import plot_forecast
+from tsLQC.plot_forecast import plot_forecast
 
 
 # input time series and preprocess it into the format needed
