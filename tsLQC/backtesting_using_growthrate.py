@@ -1,3 +1,6 @@
+from tsLQC.constant import forecast_period, date_col, value_col
+
+
 def compute_growth(x1, x2):
     return (x2 - x1) / x1
 
@@ -20,9 +23,9 @@ def backtesting(ts, backtest_length, model):
 
     print("benchmark: ", benchmark)
 
-    temp_df[temp_df['Value'] <= 0] = 0.1
-    model = model.fit(temp_df.reset_index(), date_col='Date', value_col='Value', id_col=None)
-    prediction = model.predict(48)
+    temp_df[temp_df[value_col] <= 0] = 0.1
+    model = model.fit(temp_df.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
+    prediction = model.predict(forecast_period)
     forecast_autots = prediction.forecast
 
     cumulative_forecasted_autots = forecast_autots.iloc[:backtest_length].sum()

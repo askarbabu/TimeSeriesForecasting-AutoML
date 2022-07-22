@@ -8,7 +8,7 @@ def prediction_interval(ts, point_forecast):
     std = (ts['Value'] - res.trend).std()
     new_std = (point_forecast.reset_index().index.values ** 0.5) * std
 
-    lower_forecast = pd.DataFrame(point_forecast['Value'] - 1.64 * new_std)
-    upper_forecast = pd.DataFrame(point_forecast['Value'] + 1.64 * new_std)
+    lower_forecast = pd.DataFrame(point_forecast['Value'] - z_value * new_std)
+    upper_forecast = pd.DataFrame(point_forecast['Value'] + z_value * new_std)
 
     return lower_forecast, upper_forecast

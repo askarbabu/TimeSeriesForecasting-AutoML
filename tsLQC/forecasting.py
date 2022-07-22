@@ -1,9 +1,9 @@
-from tsLQC.constant import models_with_custom_interval, forecast_period
+from tsLQC.constant import models_with_custom_interval, forecast_period, confidence_interval
 from tsLQC.prediction_interval import prediction_interval
 
 
 def forecasting_function(ts, model):
-    model_pred = model.predict(forecast_period, prediction_interval=0.90)
+    model_pred = model.predict(forecast_period, prediction_interval=confidence_interval)
 
     if model.best_model_name in models_with_custom_interval:
         point_forecast = model_pred.forecast

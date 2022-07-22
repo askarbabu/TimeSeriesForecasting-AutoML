@@ -2,10 +2,11 @@ import pandas as pd
 from autots import AutoTS
 from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
-from tsLQC.constant import autots_hyperparameter_tuning, metric_weighting, \
+from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, date_col, value_col,\
+    validation_method_default, validation_points_default, autots_hyperparameter_tuning, metric_weighting, \
     max_generations, num_validations, models_to_validate
 
-from template_generation import templateGeneration
+from tsLQC.template_generation import templateGeneration
 df = templateGeneration()
 
 
@@ -14,23 +15,23 @@ def modelling(ts, autots_hyperparameter_tuning=False):
     if autots_hyperparameter_tuning:
         validation_points, validation_method = hyperparameter_tuning(ts, 12)
     else:
-        validation_points, validation_method = 4, 'backward'
+        validation_points, validation_method = validation_points_default, validation_method_default
 
     model_list = [i for i in df.Model.unique() if (i != 'FBProphet')]
     model = AutoTS(forecast_length=validation_points,
-                   frequency='infer',
+                   frequency=frequency,
                    models_to_validate=models_to_validate,
-                   no_negatives=True,
-                   ensemble='simple',
+                   no_negatives=no_negatives,
+                   ensemble=ensemble,
                    max_generations=max_generations,
                    num_validations=num_validations,
                    validation_method=validation_method,
                    model_list=model_list,
-                   n_jobs=7,
+                   n_jobs=n_jobs,
                    metric_weighting=metric_weighting,
                    )
     model = model.import_template(df, method='only')
-    model = model.fit(ts.reset_index(), date_col='Date', value_col='Value', id_col=None)
+    model = model.fit(ts.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
 
     return model
 
