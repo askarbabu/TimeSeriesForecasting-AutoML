@@ -19,6 +19,7 @@ verbose = 0
 validation_points_default = 4
 validation_method_default = 'backward'
 
+std_dev_estimation_len = 4
 confidence_interval = 0.90
 z_value = 1.64
 
