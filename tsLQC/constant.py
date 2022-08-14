@@ -45,3 +45,6 @@ metric_weighting = {
             'contour_weighting': 0,
             'runtime_weighting': 0,
                     }
+
+flattening_analysis_range = 0.15
+flattening_limit_multiplier = 4
