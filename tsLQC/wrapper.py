@@ -23,7 +23,7 @@ def plot_forecast(timeseries_input_df, forecast_df, plot_company):
 
     sns.set_style("whitegrid")
 
-    fig, ax1 = plt.subplots(1, 1, sharex=True, figsize=(13, 8))
+    fig, ax1 = plt.subplots(1, 1, sharex=True, figsize=(8, 12))
     ax1.plot(historical_data, label='Historical Data', linestyle='dashed', c='k', marker='o')
     ax1.plot(point_forecast, label='Forecast', c='#0343DF')
     ax1.fill_between(point_forecast.index, lower_forecast, upper_forecast, alpha=0.2)
