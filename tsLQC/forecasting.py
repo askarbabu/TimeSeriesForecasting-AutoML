@@ -1,6 +1,7 @@
 from tsLQC.constant import models_with_custom_interval, forecast_period, confidence_interval
 from tsLQC.prediction_interval import prediction_interval
 from tsLQC.curve_flat import _revenue_flat
+from tsLQC.postprocessing import bad_forecast_handling, noise_addition
 import json
 
 
@@ -13,7 +14,9 @@ def forecasting_function(ts, model, best_models):
         model_pred = model.predict(forecast_period, prediction_interval=confidence_interval)
         point_forecast = model_pred.forecast
 
+        point_forecast, model = bad_forecast_handling(ts, point_forecast, model)
         point_forecast = _revenue_flat(point_forecast)
+        point_forecast = noise_addition(ts, point_forecast)
 
         if model.best_model_name in models_with_custom_interval:
             lower_forecast, upper_forecast = prediction_interval(ts, point_forecast, model)
