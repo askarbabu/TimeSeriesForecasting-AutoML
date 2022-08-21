@@ -5,6 +5,7 @@ from tsLQC.forecasting import forecasting_function
 from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, date_col, value_col,\
     validation_method_default, validation_points_default, autots_hyperparameter_tuning, metric_weighting, \
     max_generations, num_validations, models_to_validate
+from tsLQC.preprocess_input import outlier_treatment
 
 from tsLQC.template_generation import template_generation
 df = template_generation()
@@ -44,6 +45,7 @@ def train_all_companies(timeseries_input_df):
 
         try:
             ts = timeseries_input_df.loc[i].set_index('Date')[['Value']]
+            ts = outlier_treatment(ts)
 
             company_id = i
             company_name = timeseries_input_df[timeseries_input_df.index == i]['CompanyName'].iloc[0]
