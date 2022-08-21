@@ -49,8 +49,7 @@ class TimeSeriesFlattener:
             ind2switch = np.argmin(np.abs(flat_trend[:step_delta] - values2fit[:step_delta]))
             fixed_values = flat_trend[ind2switch:].tolist()
             result_values = ts[:start_flattening_position - step_delta + ind2switch].tolist() + fixed_values
-            result_values = result_values[:len(ts)]
-            output_values = TimeSeriesFlattener._add_noise(result_values)
+            output_values = result_values[:len(ts)]
             return Series(output_values, index=ts.index)
         return ts
 
