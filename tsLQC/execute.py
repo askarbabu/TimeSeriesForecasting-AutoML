@@ -7,7 +7,7 @@ from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, date_col, 
     max_generations, num_validations, models_to_validate
 from tsLQC.preprocess_input import outlier_treatment
 
-from tsLQC.template_generation import template_generation
+from tsLQC.template_generation import template_generation, generate_ensemble_models
 df = template_generation()
 
 
@@ -33,8 +33,10 @@ def modelling(ts, autots_hyperparameter_tuning=False):
                    )
     model = model.import_template(df, method='only')
     model = model.fit(ts.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
+    best_models = model.export_template(models='best', n=100, max_per_model_class=None, include_results=True) \
+        .sort_values('Score', ignore_index=True)
 
-    return model
+    return model, best_models
 
 
 def train_all_companies(timeseries_input_df):
@@ -52,8 +54,9 @@ def train_all_companies(timeseries_input_df):
 
             print('*********************Time Series Modelling for ' + company_name + '*****************************')
 
-            model = modelling(ts, autots_hyperparameter_tuning=autots_hyperparameter_tuning)
-            point_forecast, lower_forecast, upper_forecast = forecasting_function(ts, model)
+            model, best_simple_models = modelling(ts, autots_hyperparameter_tuning=autots_hyperparameter_tuning)
+            model, best_models = generate_ensemble_models(ts, model, best_simple_models)
+            point_forecast, lower_forecast, upper_forecast = forecasting_function(ts, model, best_models)
 
             temp_df = pd.DataFrame({'CompanyID': [str(company_id)] * len(point_forecast),
                                     'CompanyName': [company_name] * len(point_forecast),
