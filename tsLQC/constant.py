@@ -6,14 +6,14 @@ date_col = 'Date'
 value_col = 'Value'
 
 autots_hyperparameter_tuning = True
-max_generations = 1
+max_generations = 10
 num_validations = 0
 models_to_validate = 0.20
 forecast_period = 48
 frequency = 'infer'
 n_jobs = 'auto'
 no_negatives = True
-ensemble = 'simple'
+ensemble = None
 verbose = 0
 
 validation_points_default = 4
@@ -24,14 +24,19 @@ confidence_interval = 0.90
 z_value = 1.64
 
 
-params = {'validation_points': [4, 6, 8, 10], 'validation_method': ['backward', 'even', 'similarity']}
+params = {'validation_points': [4, 6, 8, 10], 'validation_method': ['backward', 'even']}
 hp_tuning_models_to_validate = 0.35
 hp_tuning_max_generations = 5
 hp_tuning_num_validations = 3
 hp_tuning_model_list = ['ETS']
 
-models_with_custom_interval = ['UnivariateRegression', 'MultivariateRegression', 'ETS',
-                               'DatepartRegression', 'SectionalMotif', 'GLM']
+models_with_custom_interval = ['ZeroesNaive', 'AverageValueNaive', 'LastValueNaive',
+                               'SeasonalNaive', 'GLS', 'GLM', 'ARIMA', 'ETS',
+                               'UnobservedComponents', 'DynamicFactor', 'ARDL', 'FBProphet',
+                               'RollingRegression', 'MotifSimulation', 'WindowRegression',
+                               'ComponentAnalysis', 'DatepartRegression', 'UnivariateRegression',
+                               'UnivariateMotif', 'NVAR', 'MultivariateRegression',
+                               'SectionalMotif', 'Theta', 'Ensemble']
 metric_weighting = {
             'smape_weighting': 5,
             'mae_weighting': 5,
