@@ -9,7 +9,7 @@ def prediction_interval(ts, point_forecast, model):
 
     model.forecast_length = std_dev_estimation_len
     back_forecast = model.back_forecast(n_splits='auto').forecast.iloc[-std_dev_estimation_len:]
-    actual_values = ts.iloc[-std_dev_estimation_len:]
+    actual_values = ts.interpolate().iloc[-std_dev_estimation_len:]
     errors = back_forecast - actual_values
     std_dev_estimated = errors.values.std()
 
