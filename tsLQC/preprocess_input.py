@@ -17,7 +17,7 @@ def preprocessing(timeseries_input_df):
 
 
 def outlier_treatment(ts: pd.DataFrame) -> pd.DataFrame:
-    res = seasonal_decompose(ts.interpolate()['Value'], period=6, two_sided=True, extrapolate_trend=1).resid
+    res = seasonal_decompose(ts.interpolate().iloc[:-6]['Value'], period=6, two_sided=True, extrapolate_trend=1).resid
     res_mean, res_std = res.mean(), res.std()
     outlier_upper_cutoff = res_mean + 3 * res.std()
     outlier_lower_cutoff = res_mean - 3 * res.std()
