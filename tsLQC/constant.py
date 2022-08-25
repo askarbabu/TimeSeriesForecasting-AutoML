@@ -7,7 +7,7 @@ value_col = 'Value'
 
 autots_hyperparameter_tuning = True
 max_generations = 10
-num_validations = 0
+num_validations = 3
 models_to_validate = 0.20
 forecast_period = 48
 frequency = 'infer'
