@@ -40,34 +40,34 @@ def template_generation():
 
 
 def generate_ensemble_models(ts, model, best_simple_models):
+
+    model.initial_results.model_results = best_simple_models
+    ens_temp = EnsembleTemplateGenerator(model.initial_results)
     try:
-        model.initial_results.model_results = best_simple_models
-        ens_temp = EnsembleTemplateGenerator(model.initial_results)
+        ensemble_model = AutoTS(forecast_length=10,
+                                frequency='infer',
+                                models_to_validate=0.20,
+                                no_negatives=True,
+                                ensemble='simple',
+                                max_generations=0,
+                                num_validations=3,
+                                validation_method='backward',
+                                n_jobs=7,
+                                verbose=1,
+                                metric_weighting=metric_weighting,
+                                models_mode='default'
+                                )
 
-        model = AutoTS(forecast_length=10,
-                       frequency='infer',
-                       models_to_validate=0.20,
-                       no_negatives=True,
-                       ensemble='simple',
-                       max_generations=0,
-                       num_validations=3,
-                       validation_method='backward',
-                       n_jobs=7,
-                       verbose=1,
-                       metric_weighting=metric_weighting,
-                       models_mode='default'
-                       )
+        ensemble_model = ensemble_model.import_template(ens_temp, method='only')
+        ensemble_model = ensemble_model.fit(ts.reset_index(), date_col='Date', value_col='Value', id_col=None)
 
-        model = model.import_template(ens_temp, method='only')
-        model = model.fit(ts.reset_index(), date_col='Date', value_col='Value', id_col=None)
-
-        best_ensemble_models = model.export_template(models='best', n=100, max_per_model_class=None,
-                                                     include_results=True)
+        best_ensemble_models = ensemble_model.export_template(models='best', n=100, max_per_model_class=None,
+                                                              include_results=True)
         best_ensemble_models = best_ensemble_models[best_ensemble_models.Ensemble == 1]
         best_models = pd.concat([best_simple_models, best_ensemble_models]) \
             .sort_values('Score', ignore_index=True)
 
-        return model, best_models
+        return ensemble_model, best_models
 
     except:
         print('*************Ensembling after cross validation failed*****************')
