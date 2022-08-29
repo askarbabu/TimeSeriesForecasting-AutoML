@@ -21,6 +21,8 @@ def backtesting(ts, backtest_length, model):
     cumulative_actual = backtest_df.sum()
     benchmark = rate_periodized(compute_growth(baseline, cumulative_actual), 12)[0]
 
+    print("benchmark: ", benchmark)
+
     temp_df[temp_df[value_col] <= 0] = 0.1
     model = model.fit(temp_df.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
     prediction = model.predict(forecast_period)
@@ -28,5 +30,7 @@ def backtesting(ts, backtest_length, model):
 
     cumulative_forecasted_autots = forecast_autots.iloc[:backtest_length].sum()
     forecasted_gr = rate_periodized(compute_growth(baseline, cumulative_forecasted_autots), 12)[0]
+
+    print("forecasted growth rate: ", forecasted_gr)
 
     return benchmark, forecasted_gr
