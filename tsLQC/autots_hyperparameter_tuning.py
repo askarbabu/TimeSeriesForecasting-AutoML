@@ -20,6 +20,7 @@ def hyperparameter_tuning(ts, backtest_length):
     valuations = [backtesting_models(backtest_length, ts, validation_method, validation_points) for
                   validation_points, validation_method in itertools.product(*params.values())]
     best_params = min(valuations, key=lambda x: x.accuracy)
+    print("Best Hyperparameters: ", (best_params.validation_points, best_params.validation_method))
     return best_params.validation_points, best_params.validation_method
 
 
