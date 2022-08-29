@@ -69,5 +69,5 @@ def generate_ensemble_models(ts, model, best_simple_models):
 
         return ensemble_model, best_models
 
-    finally:
+    except:
         return model, best_simple_models

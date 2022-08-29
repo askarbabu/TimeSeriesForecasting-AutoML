@@ -41,5 +41,5 @@ def backtesting_models(backtest_length, ts, validation_method, validation_points
         benchmark, forecasted_gr = backtesting(ts, backtest_length, model)
         accuracy = abs(benchmark - forecasted_gr)
         return ModelValuation(validation_points, validation_method, accuracy)
-    finally:
+    except:
         pass
