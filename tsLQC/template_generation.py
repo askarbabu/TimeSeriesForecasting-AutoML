@@ -69,6 +69,5 @@ def generate_ensemble_models(ts, model, best_simple_models):
 
         return ensemble_model, best_models
 
-    except:
-        print('*************Ensembling after cross validation failed*****************')
+    finally:
         return model, best_simple_models
