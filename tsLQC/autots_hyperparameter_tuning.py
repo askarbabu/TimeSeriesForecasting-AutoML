@@ -26,6 +26,7 @@ def hyperparameter_tuning(ts, backtest_length):
 
 def backtesting_models(backtest_length, ts, validation_method, validation_points):
     try:
+        print(validation_points, validation_method)
         model = AutoTS(forecast_length=validation_points,
                        frequency=frequency,
                        models_to_validate=hp_tuning_models_to_validate,
