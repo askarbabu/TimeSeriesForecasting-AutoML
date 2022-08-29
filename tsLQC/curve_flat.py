@@ -9,8 +9,7 @@ from scipy.optimize import curve_fit
 from tsLQC.constant import flattening_analysis_range, flattening_limit_multiplier
 
 
-def _revenue_flat(revenue: DataFrame) -> Series:
-    revenue_series = revenue.squeeze()
+def _revenue_flat(revenue_series: Series) -> Series:
     flt_rev = TimeSeriesFlattener(revenue_series)
     flat_rev = flt_rev.flatten()
     flat_rev = pd.DataFrame(flat_rev, columns=['Value'])

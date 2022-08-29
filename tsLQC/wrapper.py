@@ -12,11 +12,9 @@ timeseries_input_df = preprocessing(timeseries_input_df)
 timeseries_input_df = timeseries_input_df[timeseries_input_df.CompanyName.isin(COMPANY_LIST)]
 
 
-def plot_forecast(timeseries_input_df, forecast_df, plot_company):
-    df = timeseries_input_df[timeseries_input_df['CompanyName'] == plot_company]
+def plot_forecast(df, plot_company):
     historical_data = df.set_index('Date')['Value']
 
-    df = forecast_df[forecast_df['CompanyName'] == plot_company]
     point_forecast = df.set_index('Date')['PointForecast'].iloc[0:48]
     upper_forecast = df.set_index('Date')['UpperForecast'].iloc[0:48]
     lower_forecast = df.set_index('Date')['LowerForecast'].iloc[0:48]
@@ -39,8 +37,8 @@ def plot_forecast(timeseries_input_df, forecast_df, plot_company):
 if __name__ == '__main__':
     forecast_df = train_all_companies(timeseries_input_df)
 
-    for i in timeseries_input_df.CompanyName.unique():
+    for i, v in timeseries_input_df.items():
         try:
-            plot_forecast(timeseries_input_df, forecast_df, i)
+            plot_forecast(df=v, plot_company=i)
         except:
             pass

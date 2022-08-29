@@ -1,3 +1,5 @@
+from typing import Dict
+
 import pandas as pd
 from autots import AutoTS
 from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
@@ -11,7 +13,7 @@ from tsLQC.template_generation import template_generation, generate_ensemble_mod
 df = template_generation()
 
 
-def modelling(ts, autots_hyperparameter_tuning=False):
+def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool=False):
 
     if autots_hyperparameter_tuning:
         validation_points, validation_method = hyperparameter_tuning(ts, 12)
@@ -33,44 +35,28 @@ def modelling(ts, autots_hyperparameter_tuning=False):
                    )
     model = model.import_template(df, method='only')
     model = model.fit(ts.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
+    # TODO constant
     best_models = model.export_template(models='best', n=100, max_per_model_class=None, include_results=True) \
         .sort_values('Score', ignore_index=True)
-
     return model, best_models
 
 
-def train_all_companies(timeseries_input_df):
-    forecast_df = pd.DataFrame({'CompanyID': [], 'CompanyName': [], 'Date': [],
-                                'PointForecast': [], 'LowerForecast': [], 'UpperForecast': []})
-
-    for i in timeseries_input_df.index.unique():
-
-        try:
-            ts = timeseries_input_df.loc[i].set_index('Date')[['Value']]
-            ts = outlier_treatment(ts)
-
-            company_id = i
-            company_name = timeseries_input_df[timeseries_input_df.index == i]['CompanyName'].iloc[0]
-
-            print('*********************Time Series Modelling for ' + company_name + '*****************************')
-
-            model, best_simple_models = modelling(ts, autots_hyperparameter_tuning=autots_hyperparameter_tuning)
-            model, best_models = generate_ensemble_models(ts, model, best_simple_models)
-            point_forecast, lower_forecast, upper_forecast = forecasting_function(ts, model, best_models)
-
-            temp_df = pd.DataFrame({'CompanyID': [str(company_id)] * len(point_forecast),
-                                    'CompanyName': [company_name] * len(point_forecast),
-                                    'Date': list(point_forecast.index),
-                                    'PointForecast': list(point_forecast['Value'].values),
-                                    'LowerForecast': list(lower_forecast['Value'].values),
-                                    'UpperForecast': list(upper_forecast['Value'].values)
-                                    })
-            forecast_df = pd.concat([forecast_df, temp_df])
-
-        except:
-            print(
-                '##################################### FAILED FOR {} ######################################'.format(i))
-
-    forecast_df = forecast_df.set_index('CompanyID')
-
+def train_all_companies(timeseries_input_df) -> Dict[str, pd.DataFrame]:
+    forecast_df = {i: foo(ts=timeseries_input_df.loc[i].set_index('Date')[['Value']])
+                   for i in timeseries_input_df.index.unique()}
     return forecast_df
+
+
+def foo(ts: pd.Series):
+    try:
+        ts = outlier_treatment(ts)
+        model, best_simple_models = modelling(ts, autots_hyperparameter_tuning=autots_hyperparameter_tuning)
+        model, best_models = generate_ensemble_models(ts, model, best_simple_models)
+        point_forecast, lower_forecast, upper_forecast = forecasting_function(ts, model, best_models)
+        df = pd.concat([point_forecast, lower_forecast, upper_forecast])
+        return df
+
+    except:
+        print(
+            '##################################### FAILED FOR {} ######################################'.format(i))
+    return None

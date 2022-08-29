@@ -21,7 +21,7 @@ def prediction_interval(ts, point_forecast, model):
                                 if not (np.isnan(i) or np.isinf(i))])
     new_std = std_dev_estimated * np.sqrt(h * (1 + (h/t)))
 
-    lower_forecast = pd.DataFrame(point_forecast['Value'] - z_value * new_std)
-    upper_forecast = pd.DataFrame(point_forecast['Value'] + z_value * new_std)
+    lower_forecast = point_forecast['Value'] - z_value * new_std
+    upper_forecast = point_forecast['Value'] + z_value * new_std
 
     return lower_forecast, upper_forecast

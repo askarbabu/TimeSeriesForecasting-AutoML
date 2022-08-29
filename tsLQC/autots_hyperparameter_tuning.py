@@ -1,4 +1,6 @@
 import itertools
+
+import pandas as pd
 from autots import AutoTS
 
 from tsLQC.template_generation import template_generation
@@ -8,8 +10,8 @@ from tsLQC.constant import params, n_jobs, verbose,  frequency, hp_tuning_models
 df = template_generation()
 
 
-def hyperparameter_tuning(ts, backtest_length):
-    print("----------------------------------Hyperparameter Tuning ------------------------------------")
+def hyperparameter_tuning(ts: pd.Series, backtest_length):
+    print("----------------: ------------------Hyperparameter Tuning ------------------------------------")
     hyperparams_dict = {}
 
     for validation_points, validation_method in itertools.product(*params.values()):

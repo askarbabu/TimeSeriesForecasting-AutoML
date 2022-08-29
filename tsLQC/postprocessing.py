@@ -4,11 +4,11 @@ from autots import AutoTS
 from statsmodels.tsa.seasonal import seasonal_decompose
 
 
-def bad_forecast_handling(ts, point_forecast, model):
-    ts_trend = seasonal_decompose(ts.interpolate()['Value'], period=6, two_sided=True, extrapolate_trend=1).trend
+def bad_forecast_handling(ts: pd.Series, point_forecast: pd.Series, model):
+    ts_trend = seasonal_decompose(ts.interpolate(), period=6, two_sided=True, extrapolate_trend=1).trend
     ts_trend_slope = (ts_trend[-1] - ts_trend[-12]) / 12
 
-    forecasted_trend = seasonal_decompose(point_forecast['Value'], period=6, two_sided=True, extrapolate_trend=1).trend
+    forecasted_trend = seasonal_decompose(point_forecast, period=6, two_sided=True, extrapolate_trend=1).trend
     forecasted_trend_slope = (forecasted_trend.iloc[11] - forecasted_trend.iloc[0]) / 12
 
     slope_criteria = 999999 > (forecasted_trend_slope - ts_trend_slope) / ts_trend_slope > 0
@@ -29,9 +29,7 @@ def bad_forecast_handling(ts, point_forecast, model):
 
 
 def noise_addition(ts, point_forecast):
-    result_values = point_forecast.values.squeeze()
-    res = seasonal_decompose(ts.interpolate()['Value'], period=6, two_sided=True, extrapolate_trend=1).resid
-    noise = np.random.normal(res.mean(), res.std(), len(result_values))
-    output_values = result_values + noise * np.linspace(0, 1, len(result_values))
-
-    return pd.DataFrame(output_values, columns=['Value'], index=point_forecast.index)
+    res = seasonal_decompose(ts.interpolate(), period=6, two_sided=True, extrapolate_trend=1).resid
+    noise = np.random.normal(res.mean(), res.std(), len(point_forecast))
+    output_values = point_forecast + noise * np.linspace(0, 1, len(point_forecast))
+    return output_values
