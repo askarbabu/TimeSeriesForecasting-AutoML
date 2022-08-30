@@ -1,3 +1,4 @@
+import logging
 from pandas import Series
 from tsLQC.constant import forecast_period, date_col, value_col
 from autots import AutoTS
@@ -24,7 +25,7 @@ def backtesting(ts: Series, backtest_length: int, model: AutoTS) -> Tuple[float,
     cumulative_actual = backtest_df.sum()
     benchmark = rate_periodized(compute_growth(baseline, cumulative_actual), 12)
 
-    print("benchmark: ", benchmark)
+    logging.info(f'benchmark: {benchmark}')
 
     temp_df[temp_df <= 0] = 0.1
     model = model.fit(temp_df.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
@@ -34,6 +35,6 @@ def backtesting(ts: Series, backtest_length: int, model: AutoTS) -> Tuple[float,
     cumulative_forecasted_autots = forecast_autots.iloc[:backtest_length].sum()
     forecasted_gr = rate_periodized(compute_growth(baseline, cumulative_forecasted_autots), 12)
 
-    print("forecasted growth rate: ", forecasted_gr)
+    logging.info(f'forecasted growth rate: {forecasted_gr}')
 
     return benchmark, forecasted_gr

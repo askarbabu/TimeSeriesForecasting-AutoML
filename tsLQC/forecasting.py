@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 from autots import AutoTS
 from typing import Tuple
@@ -24,7 +25,7 @@ def forecasting_function(ts: pd.Series, model: AutoTS, best_models: pd.DataFrame
             model.best_model_transformation_params = \
                 json.loads(best_models[best_models.ID == best_model_id]['TransformationParameters'].iloc[0])
 
-            print('Forecasting using', model.best_model_name, 'model')
+            logging.info(f'Forecasting using {model.best_model_name} model')
 
             model_pred = model.predict(forecast_period, prediction_interval=confidence_interval)
             point_forecast = model_pred.forecast[value_col]
@@ -39,7 +40,7 @@ def forecasting_function(ts: pd.Series, model: AutoTS, best_models: pd.DataFrame
             break
 
         except:
-            print('Forecasting failed using', model.best_model_name, 'model')
+            logging.info(f'Forecasting failed using {model.best_model_name} model')
             pass
 
     return point_forecast, lower_forecast, upper_forecast

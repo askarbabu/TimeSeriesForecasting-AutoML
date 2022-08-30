@@ -1,3 +1,4 @@
+import logging
 import itertools
 from dataclasses import dataclass
 from autots import AutoTS
@@ -22,14 +23,14 @@ def hyperparameter_tuning(ts: Series, backtest_length: int) -> Tuple[int, str]:
     valuations = [backtesting_models(backtest_length, ts, validation_method, validation_points) for
                   validation_points, validation_method in itertools.product(*params.values())]
     best_params = min(valuations, key=lambda x: x.accuracy)
-    print("Best Hyperparameters: ", (best_params.validation_points, best_params.validation_method))
+    logging.info(f'Best Hyperparameters: {(best_params.validation_points, best_params.validation_method)}')
     return best_params.validation_points, best_params.validation_method
 
 
 def backtesting_models(backtest_length: int, ts: Series, validation_method: str, validation_points: int) -> \
         ModelValuation:
     try:
-        print(validation_points, validation_method)
+        logging.info(f'Running {(validation_points, validation_method)} ....')
         model = AutoTS(forecast_length=validation_points,
                        frequency=frequency,
                        models_to_validate=hp_tuning_models_to_validate,
