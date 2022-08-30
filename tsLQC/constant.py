@@ -14,7 +14,7 @@ frequency = 'infer'
 n_jobs = 'auto'
 no_negatives = True
 ensemble = None
-verbose = 0
+verbose = -1
 
 validation_points_default = 4
 validation_method_default = 'backward'
