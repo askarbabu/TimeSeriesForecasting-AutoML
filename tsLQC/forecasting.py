@@ -1,6 +1,6 @@
 import pandas as pd
 
-from tsLQC.constant import forecast_period, confidence_interval
+from tsLQC.constant import forecast_period, confidence_interval, value_col
 from tsLQC.prediction_interval import prediction_interval
 from tsLQC.curve_flat import _revenue_flat
 from tsLQC.postprocessing import bad_forecast_handling, noise_addition
@@ -8,7 +8,7 @@ import json
 
 
 def forecasting_function(ts, model, best_models):
-    point_forecast, lower_forecast, upper_forecast = pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
+    point_forecast, lower_forecast, upper_forecast = pd.Series(), pd.Series(), pd.Series()
 
     for i in best_models.index:
         try:
@@ -25,15 +25,15 @@ def forecasting_function(ts, model, best_models):
             print('Forecasting using', model.best_model_name, 'model')
 
             model_pred = model.predict(forecast_period, prediction_interval=confidence_interval)
-
-            point_forecast = model_pred.forecast
+            point_forecast = model_pred.forecast[value_col]
 
             point_forecast, model = bad_forecast_handling(ts, point_forecast, model)
             point_forecast = _revenue_flat(point_forecast)
             point_forecast = noise_addition(ts, point_forecast)
 
             lower_forecast, upper_forecast = prediction_interval(ts, point_forecast, model)
-
+            point_forecast.name, lower_forecast.name, upper_forecast.name = 'point_forecast', 'lower_forecast', \
+                                                                            'upper_forecast'
             break
 
         except:

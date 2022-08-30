@@ -1,13 +1,13 @@
 inputTableLocation = 'revenue_input_v3.csv'
 primary_key = ['CompanyID']
-COMPANY_LIST = ['HCW', 'Optiqua', 'Micropharma']
+COMPANY_LIST = ['ExeVir', 'Franklin', 'Optiqua', 'Micropharma']
 
 date_col = 'Date'
 value_col = 'Value'
 
-autots_hyperparameter_tuning = True
-max_generations = 10
-num_validations = 3
+autots_hyperparameter_tuning = False
+max_generations = 15
+num_validations = 2
 models_to_validate = 0.20
 forecast_period = 48
 frequency = 'infer'
@@ -30,13 +30,19 @@ hp_tuning_max_generations = 5
 hp_tuning_num_validations = 3
 hp_tuning_model_list = ['ETS']
 
-models_with_custom_interval = ['ZeroesNaive', 'AverageValueNaive', 'LastValueNaive',
-                               'SeasonalNaive', 'GLS', 'GLM', 'ARIMA', 'ETS',
-                               'UnobservedComponents', 'DynamicFactor', 'ARDL', 'FBProphet',
-                               'RollingRegression', 'MotifSimulation', 'WindowRegression',
-                               'ComponentAnalysis', 'DatepartRegression', 'UnivariateRegression',
-                               'UnivariateMotif', 'NVAR', 'MultivariateRegression',
-                               'SectionalMotif', 'Theta', 'Ensemble']
+model_list = ['GLS',
+              'SeasonalNaive',
+              'GLM',
+              'ETS',
+              'WindowRegression',
+              'DatepartRegression',
+              'UnivariateMotif',
+              'SectionalMotif',
+              'NVAR',
+              'ARIMA',
+              'ARDL',
+              'Theta']
+
 metric_weighting = {
             'smape_weighting': 5,
             'mae_weighting': 5,
@@ -52,4 +58,4 @@ metric_weighting = {
                     }
 
 flattening_analysis_range = 0.15
-flattening_limit_multiplier = 4
+flattening_limit_multiplier = 2.5

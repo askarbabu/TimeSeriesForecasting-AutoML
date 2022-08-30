@@ -2,18 +2,15 @@ from datetime import date
 from typing import List
 
 import numpy as np
-import pandas as pd
-from pandas import DataFrame, Series
+from pandas import Series
 from scipy.optimize import curve_fit
 
 from tsLQC.constant import flattening_analysis_range, flattening_limit_multiplier
 
 
-def _revenue_flat(revenue: DataFrame) -> Series:
-    revenue_series = revenue.squeeze()
-    flt_rev = TimeSeriesFlattener(revenue_series)
+def _revenue_flat(revenue: Series) -> Series:
+    flt_rev = TimeSeriesFlattener(revenue)
     flat_rev = flt_rev.flatten()
-    flat_rev = pd.DataFrame(flat_rev, columns=['Value'])
     return flat_rev
 
 

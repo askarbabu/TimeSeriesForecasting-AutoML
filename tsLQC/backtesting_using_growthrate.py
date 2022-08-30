@@ -6,7 +6,7 @@ def compute_growth(x1, x2):
 
 
 def rate_periodized(growthrate, period):
-    if growthrate[0] > -1:
+    if growthrate > -1:
         return round((((1 + growthrate) ** (1 / period)) - 1), 4)
     else:
         return -1
@@ -19,17 +19,17 @@ def backtesting(ts, backtest_length, model):
 
     baseline = temp_df[-backtest_length:].sum()
     cumulative_actual = backtest_df.sum()
-    benchmark = rate_periodized(compute_growth(baseline, cumulative_actual), 12)[0]
+    benchmark = rate_periodized(compute_growth(baseline, cumulative_actual), 12)
 
     print("benchmark: ", benchmark)
 
-    temp_df[temp_df[value_col] <= 0] = 0.1
+    temp_df[temp_df <= 0] = 0.1
     model = model.fit(temp_df.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
     prediction = model.predict(forecast_period)
-    forecast_autots = prediction.forecast
+    forecast_autots = prediction.forecast[value_col]
 
     cumulative_forecasted_autots = forecast_autots.iloc[:backtest_length].sum()
-    forecasted_gr = rate_periodized(compute_growth(baseline, cumulative_forecasted_autots), 12)[0]
+    forecasted_gr = rate_periodized(compute_growth(baseline, cumulative_forecasted_autots), 12)
 
     print("forecasted growth rate: ", forecasted_gr)
 
