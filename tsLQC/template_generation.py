@@ -1,6 +1,7 @@
 import itertools
 import json
 import pandas as pd
+from typing import Tuple
 from autots import AutoTS
 from autots.models.ensemble import EnsembleTemplateGenerator
 from tsLQC.constant import metric_weighting
@@ -10,7 +11,7 @@ f = open('model_params.json', "r")
 params_dict = json.loads(f.read())
 
 
-def generatetemplate(modelname, params):
+def generatetemplate(modelname: str, params: dict) -> pd.DataFrame:
 
     d = {}
     paramslst = []
@@ -28,7 +29,7 @@ def generatetemplate(modelname, params):
     return pd.DataFrame(d)
 
 
-def template_generation():
+def template_generation() -> pd.DataFrame:
     temp_df = pd.DataFrame()
 
     for i in params_dict.keys():
@@ -39,7 +40,8 @@ def template_generation():
     return df
 
 
-def generate_ensemble_models(ts, model, best_simple_models):
+def generate_ensemble_models(ts: pd.Series, model: AutoTS, best_simple_models: pd.DataFrame) ->\
+        Tuple[AutoTS, pd.DataFrame]:
 
     model.initial_results.model_results = best_simple_models
     ens_temp = EnsembleTemplateGenerator(model.initial_results)

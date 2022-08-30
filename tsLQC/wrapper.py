@@ -12,7 +12,7 @@ timeseries_input_df = preprocessing(timeseries_input_df)
 timeseries_input_df = timeseries_input_df[timeseries_input_df.CompanyName.isin(COMPANY_LIST)]
 
 
-def plot_forecast(timeseries_input_df, forecast_df, plot_company):
+def plot_forecast(timeseries_input_df: pd.DataFrame, forecast_df: dict, plot_company: str) -> None:
     df = timeseries_input_df.loc[plot_company]
     company_name = df.iloc[0]['CompanyName']
     historical_data = df.set_index(date_col)[value_col]
@@ -23,7 +23,7 @@ def plot_forecast(timeseries_input_df, forecast_df, plot_company):
 
     sns.set_style("whitegrid")
 
-    fig, ax1 = plt.subplots(1, 1, sharex=True, figsize=(8, 12))
+    fig, ax1 = plt.subplots(1, 1, sharex='all', figsize=(8, 12))
     ax1.plot(historical_data, label='Historical Data', linestyle='dashed', c='k', marker='o')
     ax1.plot(point_forecast, label='Forecast', c='#0343DF')
     ax1.fill_between(point_forecast.index, lower_forecast, upper_forecast, alpha=0.2)

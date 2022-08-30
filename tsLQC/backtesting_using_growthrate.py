@@ -1,18 +1,21 @@
+from pandas import Series
 from tsLQC.constant import forecast_period, date_col, value_col
+from autots import AutoTS
+from typing import Tuple
 
 
-def compute_growth(x1, x2):
+def compute_growth(x1: float, x2: float) -> float:
     return (x2 - x1) / x1
 
 
-def rate_periodized(growthrate, period):
+def rate_periodized(growthrate: float, period: int) -> float:
     if growthrate > -1:
         return round((((1 + growthrate) ** (1 / period)) - 1), 4)
     else:
         return -1
 
 
-def backtesting(ts, backtest_length, model):
+def backtesting(ts: Series, backtest_length: int, model: AutoTS) -> Tuple[float, float]:
 
     backtest_df = ts[-backtest_length:]
     temp_df = ts[:-backtest_length]

@@ -6,7 +6,7 @@ from tsLQC.constant import primary_key
 percent_trimmed = 0.1
 
 
-def preprocessing(timeseries_input_df):
+def preprocessing(timeseries_input_df: pd.DataFrame) -> pd.DataFrame:
 
     timeseries_input_df['Date'] = timeseries_input_df['Date'].str[-4:] + '-' + timeseries_input_df['Date'].str[
                                                                                3:5] + '-01'

@@ -1,6 +1,8 @@
 import itertools
 from dataclasses import dataclass
 from autots import AutoTS
+from pandas import Series
+from typing import Tuple
 
 from tsLQC.template_generation import template_generation
 from tsLQC.backtesting_using_growthrate import backtesting
@@ -11,12 +13,12 @@ df = template_generation()
 
 @dataclass
 class ModelValuation:
-    validation_points: float
+    validation_points: int
     validation_method: str
     accuracy: float
 
 
-def hyperparameter_tuning(ts, backtest_length):
+def hyperparameter_tuning(ts: Series, backtest_length: int) -> Tuple[int, str]:
     valuations = [backtesting_models(backtest_length, ts, validation_method, validation_points) for
                   validation_points, validation_method in itertools.product(*params.values())]
     best_params = min(valuations, key=lambda x: x.accuracy)
@@ -24,7 +26,8 @@ def hyperparameter_tuning(ts, backtest_length):
     return best_params.validation_points, best_params.validation_method
 
 
-def backtesting_models(backtest_length, ts, validation_method, validation_points):
+def backtesting_models(backtest_length: int, ts: Series, validation_method: str, validation_points: int) -> \
+        ModelValuation:
     try:
         print(validation_points, validation_method)
         model = AutoTS(forecast_length=validation_points,

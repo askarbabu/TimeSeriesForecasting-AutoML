@@ -1,5 +1,6 @@
 import pandas as pd
-
+from autots import AutoTS
+from typing import Tuple
 from tsLQC.constant import forecast_period, confidence_interval, value_col
 from tsLQC.prediction_interval import prediction_interval
 from tsLQC.curve_flat import _revenue_flat
@@ -7,7 +8,8 @@ from tsLQC.postprocessing import bad_forecast_handling, noise_addition
 import json
 
 
-def forecasting_function(ts, model, best_models):
+def forecasting_function(ts: pd.Series, model: AutoTS, best_models: pd.DataFrame) ->\
+        Tuple[pd.Series, pd.Series, pd.Series]:
     point_forecast, lower_forecast, upper_forecast = pd.Series(), pd.Series(), pd.Series()
 
     for i in best_models.index:

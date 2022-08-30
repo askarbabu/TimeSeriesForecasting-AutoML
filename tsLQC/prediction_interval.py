@@ -1,9 +1,12 @@
 from tsLQC.constant import z_value, std_dev_estimation_len
 import numpy as np
+from pandas import Series
+from autots import AutoTS
+from typing import Tuple
 from statsmodels.tsa.seasonal import seasonal_decompose
 
 
-def prediction_interval(ts, point_forecast, model):
+def prediction_interval(ts: Series, point_forecast: Series, model: AutoTS) -> Tuple[Series, Series]:
     t = len(ts)
     h = 1 + point_forecast.reset_index().index.values
 

@@ -1,5 +1,6 @@
 import pandas as pd
 from autots import AutoTS
+from typing import Tuple
 from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
 from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, date_col, value_col,\
@@ -10,7 +11,7 @@ from tsLQC.template_generation import template_generation, generate_ensemble_mod
 df = template_generation()
 
 
-def modelling(ts, autots_hyperparameter_tuning=False):
+def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tuple[AutoTS, pd.DataFrame]:
 
     if autots_hyperparameter_tuning:
         validation_points, validation_method = hyperparameter_tuning(ts, 12)
@@ -37,7 +38,7 @@ def modelling(ts, autots_hyperparameter_tuning=False):
     return model, best_models
 
 
-def train_one_company(ts: pd.Series):
+def train_one_company(ts: pd.Series) -> pd.DataFrame:
     try:
         ts = outlier_treatment(ts)
         model, best_simple_models = modelling(ts, autots_hyperparameter_tuning=autots_hyperparameter_tuning)
@@ -47,10 +48,10 @@ def train_one_company(ts: pd.Series):
         return forecast_one_company
 
     except:
-        return None
+        return pd.DataFrame()
 
 
-def train_all_companies(timeseries_input_df):
+def train_all_companies(timeseries_input_df: pd.DataFrame) -> dict:
 
     forecast_df = {i: train_one_company(ts=timeseries_input_df.loc[i].set_index(date_col)[value_col])
                    for i in timeseries_input_df.index.unique()}

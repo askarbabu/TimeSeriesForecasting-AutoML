@@ -28,7 +28,7 @@ class TimeSeriesFlattener:
         return flattened_ts
 
     @staticmethod
-    def _apply_flat(ts: Series, start_flattening_date) -> Series:
+    def _apply_flat(ts: Series, start_flattening_date: date) -> Series:
         def _expv_func(x, a, b):
             return a / (1 + np.exp(-b * x))
 
