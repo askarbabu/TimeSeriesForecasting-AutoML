@@ -5,7 +5,7 @@ from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
 from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, date_col, value_col,\
     validation_method_default, validation_points_default, autots_hyperparameter_tuning, metric_weighting, \
-    max_generations, num_validations, models_to_validate, model_list
+    max_generations, num_validations, models_to_validate, model_list, verbose
 from tsLQC.preprocess_input import outlier_treatment
 from tsLQC.template_generation import template_generation, generate_ensemble_models
 df = template_generation()
@@ -29,6 +29,7 @@ def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tupl
                    model_list=model_list,
                    n_jobs=n_jobs,
                    metric_weighting=metric_weighting,
+                   verbose=verbose
                    )
     model = model.import_template(df, method='only')
     model = model.fit(ts.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
