@@ -7,8 +7,14 @@ from typing import Tuple
 
 from tsLQC.template_generation import template_generation
 from tsLQC.backtesting_using_growthrate import backtesting
-from tsLQC.constant import params, n_jobs, verbose, frequency, hp_tuning_models_to_validate, \
-    hp_tuning_max_generations, hp_tuning_num_validations, hp_tuning_model_list
+from tsLQC.constant import n_jobs, verbose, frequency
+
+PARAMS = {'validation_points': [4, 6, 8, 10], 'validation_method': ['backward', 'even']}
+HP_TUNING_MODELS_TO_VALIDATE = 0.35
+HP_TUNING_MAX_GENERATIONS = 5
+HP_TUNING_NUM_VALIDATIONS = 3
+HP_TUNING_MODEL_LIST = ['ETS']
+
 df = template_generation()
 
 
@@ -21,7 +27,7 @@ class ModelValuation:
 
 def hyperparameter_tuning(ts: Series, backtest_length: int) -> Tuple[int, str]:
     valuations = [backtesting_models(backtest_length, ts, validation_method, validation_points) for
-                  validation_points, validation_method in itertools.product(*params.values())]
+                  validation_points, validation_method in itertools.product(*PARAMS.values())]
     best_params = min(valuations, key=lambda x: x.accuracy)
     logging.info(f'Best Hyperparameters: {(best_params.validation_points, best_params.validation_method)}')
     return best_params.validation_points, best_params.validation_method
@@ -33,13 +39,13 @@ def backtesting_models(backtest_length: int, ts: Series, validation_method: str,
         logging.info(f'Running {(validation_points, validation_method)} ....')
         model = AutoTS(forecast_length=validation_points,
                        frequency=frequency,
-                       models_to_validate=hp_tuning_models_to_validate,
+                       models_to_validate=HP_TUNING_MODELS_TO_VALIDATE,
                        no_negatives=True,
                        ensemble=None,
-                       max_generations=hp_tuning_max_generations,
-                       num_validations=hp_tuning_num_validations,
+                       max_generations=HP_TUNING_MAX_GENERATIONS,
+                       num_validations=HP_TUNING_NUM_VALIDATIONS,
                        validation_method=validation_method,
-                       model_list=hp_tuning_model_list,
+                       model_list=HP_TUNING_MODEL_LIST,
                        verbose=verbose,
                        n_jobs=n_jobs)
         model = model.import_template(df, method='only')

@@ -14,13 +14,6 @@ ensemble = None
 verbose = -1
 
 
-params = {'validation_points': [4, 6, 8, 10], 'validation_method': ['backward', 'even']}
-hp_tuning_models_to_validate = 0.35
-hp_tuning_max_generations = 5
-hp_tuning_num_validations = 3
-hp_tuning_model_list = ['ETS']
-
-
 metric_weighting = {
             'smape_weighting': 5,
             'mae_weighting': 5,
