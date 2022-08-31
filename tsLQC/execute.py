@@ -4,11 +4,13 @@ from typing import Tuple
 from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
 from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, DATE_COL, VALUE_COL,\
-    validation_method_default, validation_points_default, autots_hyperparameter_tuning, metric_weighting, \
-    max_generations, num_validations, models_to_validate, verbose
+                           autots_hyperparameter_tuning, metric_weighting, \
+                           max_generations, num_validations, models_to_validate, verbose
 from tsLQC.preprocess_input import outlier_treatment
 from tsLQC.template_generation import template_generation, generate_ensemble_models
 
+VALIDATION_POINTS_DEFAULT = 4
+VALIDATION_METHOD_DEFAULT = 'backward'
 MODEL_LIST = ['GLS', 'SeasonalNaive', 'GLM', 'ETS', 'WindowRegression', 'DatepartRegression',
               'UnivariateMotif', 'SectionalMotif', 'NVAR', 'ARIMA', 'ARDL', 'Theta']
 
@@ -20,7 +22,7 @@ def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tupl
     if autots_hyperparameter_tuning:
         validation_points, validation_method = hyperparameter_tuning(ts, 12)
     else:
-        validation_points, validation_method = validation_points_default, validation_method_default
+        validation_points, validation_method = VALIDATION_POINTS_DEFAULT, VALIDATION_METHOD_DEFAULT
 
     model = AutoTS(forecast_length=validation_points,
                    frequency=frequency,

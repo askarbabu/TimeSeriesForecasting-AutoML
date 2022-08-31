@@ -13,8 +13,6 @@ no_negatives = True
 ensemble = None
 verbose = -1
 
-validation_points_default = 4
-validation_method_default = 'backward'
 
 std_dev_estimation_len = 4
 confidence_interval = 0.90
