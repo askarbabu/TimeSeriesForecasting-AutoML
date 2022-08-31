@@ -7,7 +7,7 @@ from typing import Tuple
 
 from tsLQC.template_generation import template_generation
 from tsLQC.backtesting_using_growthrate import backtesting
-from tsLQC.constant import n_jobs, verbose, frequency
+from tsLQC.constant import n_jobs, VERBOSE, frequency
 
 PARAMS = {'validation_points': [4, 6, 8, 10], 'validation_method': ['backward', 'even']}
 HP_TUNING_MODELS_TO_VALIDATE = 0.35
@@ -46,7 +46,7 @@ def backtesting_models(backtest_length: int, ts: Series, validation_method: str,
                        num_validations=HP_TUNING_NUM_VALIDATIONS,
                        validation_method=validation_method,
                        model_list=HP_TUNING_MODEL_LIST,
-                       verbose=verbose,
+                       verbose=VERBOSE,
                        n_jobs=n_jobs)
         model = model.import_template(df, method='only')
 

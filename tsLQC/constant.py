@@ -9,12 +9,11 @@ models_to_validate = 0.20
 forecast_period = 48
 frequency = 'infer'
 n_jobs = 'auto'
-no_negatives = True
-ensemble = None
-verbose = -1
+NO_NEGATIVES = True
+VERBOSE = -1
 
 
-metric_weighting = {
+METRIC_WEIGHTING = {
             'smape_weighting': 5,
             'mae_weighting': 5,
             'rmse_weighting': 0,
