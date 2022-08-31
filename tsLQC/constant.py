@@ -1,4 +1,3 @@
-primary_key = ['CompanyID']
 DATE_COL = 'Date'
 VALUE_COL = 'Value'
 

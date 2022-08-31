@@ -1,17 +1,24 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from tsLQC.preprocess_input import preprocessing
 from tsLQC.execute import train_all_companies
 from tsLQC.constant import DATE_COL, VALUE_COL
 
 INPUT_TABLE_LOCATION = 'revenue_input_v3.csv'
+PRIMARY_KEY = ['CompanyID']
 COMPANY_LIST = ['ExeVir', 'Franklin', 'Optiqua', 'Micropharma']
 
-# input time series and preprocess it into the format needed
-timeseries_input_df = pd.read_csv(INPUT_TABLE_LOCATION, index_col=0)
-timeseries_input_df = preprocessing(timeseries_input_df)
-timeseries_input_df = timeseries_input_df[timeseries_input_df.CompanyName.isin(COMPANY_LIST)]
+
+def preprocessing(timeseries_input_df: pd.DataFrame) -> pd.DataFrame:
+
+    timeseries_input_df['Date'] = timeseries_input_df['Date'].str[-4:] + '-' + timeseries_input_df['Date'].str[
+                                                                               3:5] + '-01'
+    timeseries_input_df['Date'] = pd.to_datetime(timeseries_input_df['Date'])
+    timeseries_input_df['CompanyClass'] = timeseries_input_df['CompanyClass'].astype('str')
+    timeseries_input_df = timeseries_input_df.set_index(PRIMARY_KEY)
+    timeseries_input_df.index = timeseries_input_df.index.astype(int).astype(str)
+
+    return timeseries_input_df
 
 
 def plot_forecast(timeseries_input_df: pd.DataFrame, forecast_df: dict, plot_company: str) -> None:
@@ -36,6 +43,12 @@ def plot_forecast(timeseries_input_df: pd.DataFrame, forecast_df: dict, plot_com
     plt.show()
 
     return
+
+
+# input time series and preprocess it into the format needed
+timeseries_input_df = pd.read_csv(INPUT_TABLE_LOCATION, index_col=0)
+timeseries_input_df = preprocessing(timeseries_input_df)
+timeseries_input_df = timeseries_input_df[timeseries_input_df.CompanyName.isin(COMPANY_LIST)]
 
 
 if __name__ == '__main__':
