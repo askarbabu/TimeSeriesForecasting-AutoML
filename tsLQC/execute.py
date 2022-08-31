@@ -17,7 +17,7 @@ VALIDATION_METHOD_DEFAULT = 'backward'
 MODEL_LIST = ['GLS', 'SeasonalNaive', 'GLM', 'ETS', 'WindowRegression', 'DatepartRegression',
               'UnivariateMotif', 'SectionalMotif', 'NVAR', 'ARIMA', 'ARDL', 'Theta']
 ENSEMBLE = None
-
+MAX_NO_OF_BEST_MODELS = 100
 
 df = template_generation()
 
@@ -44,8 +44,8 @@ def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tupl
                    )
     model = model.import_template(df, method='only')
     model = model.fit(ts.reset_index(), date_col=DATE_COL, value_col=VALUE_COL, id_col=None)
-    best_models = model.export_template(models='best', n=100, max_per_model_class=None, include_results=True)\
-        .sort_values('Score', ignore_index=True)
+    best_models = model.export_template(models='best', n=MAX_NO_OF_BEST_MODELS, max_per_model_class=None,
+                                        include_results=True).sort_values('Score', ignore_index=True)
 
     return model, best_models
 
