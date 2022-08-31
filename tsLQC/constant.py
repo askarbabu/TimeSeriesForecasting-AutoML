@@ -14,11 +14,6 @@ ensemble = None
 verbose = -1
 
 
-std_dev_estimation_len = 4
-confidence_interval = 0.90
-z_value = 1.64
-
-
 params = {'validation_points': [4, 6, 8, 10], 'validation_method': ['backward', 'even']}
 hp_tuning_models_to_validate = 0.35
 hp_tuning_max_generations = 5
