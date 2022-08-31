@@ -27,18 +27,6 @@ hp_tuning_max_generations = 5
 hp_tuning_num_validations = 3
 hp_tuning_model_list = ['ETS']
 
-model_list = ['GLS',
-              'SeasonalNaive',
-              'GLM',
-              'ETS',
-              'WindowRegression',
-              'DatepartRegression',
-              'UnivariateMotif',
-              'SectionalMotif',
-              'NVAR',
-              'ARIMA',
-              'ARDL',
-              'Theta']
 
 metric_weighting = {
             'smape_weighting': 5,

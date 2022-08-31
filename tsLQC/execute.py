@@ -5,9 +5,13 @@ from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
 from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, DATE_COL, VALUE_COL,\
     validation_method_default, validation_points_default, autots_hyperparameter_tuning, metric_weighting, \
-    max_generations, num_validations, models_to_validate, model_list, verbose
+    max_generations, num_validations, models_to_validate, verbose
 from tsLQC.preprocess_input import outlier_treatment
 from tsLQC.template_generation import template_generation, generate_ensemble_models
+
+MODEL_LIST = ['GLS', 'SeasonalNaive', 'GLM', 'ETS', 'WindowRegression', 'DatepartRegression',
+              'UnivariateMotif', 'SectionalMotif', 'NVAR', 'ARIMA', 'ARDL', 'Theta']
+
 df = template_generation()
 
 
@@ -26,7 +30,7 @@ def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tupl
                    max_generations=max_generations,
                    num_validations=num_validations,
                    validation_method=validation_method,
-                   model_list=model_list,
+                   model_list=MODEL_LIST,
                    n_jobs=n_jobs,
                    metric_weighting=metric_weighting,
                    verbose=verbose
