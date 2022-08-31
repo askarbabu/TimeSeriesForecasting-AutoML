@@ -1,13 +1,15 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from tsLQC.constant import inputTableLocation, COMPANY_LIST
 from tsLQC.preprocess_input import preprocessing
 from tsLQC.execute import train_all_companies
-from tsLQC.constant import date_col, value_col
+from tsLQC.constant import DATE_COL, VALUE_COL
+
+INPUT_TABLE_LOCATION = 'revenue_input_v3.csv'
+COMPANY_LIST = ['ExeVir', 'Franklin', 'Optiqua', 'Micropharma']
 
 # input time series and preprocess it into the format needed
-timeseries_input_df = pd.read_csv(inputTableLocation, index_col=0)
+timeseries_input_df = pd.read_csv(INPUT_TABLE_LOCATION, index_col=0)
 timeseries_input_df = preprocessing(timeseries_input_df)
 timeseries_input_df = timeseries_input_df[timeseries_input_df.CompanyName.isin(COMPANY_LIST)]
 
@@ -15,7 +17,7 @@ timeseries_input_df = timeseries_input_df[timeseries_input_df.CompanyName.isin(C
 def plot_forecast(timeseries_input_df: pd.DataFrame, forecast_df: dict, plot_company: str) -> None:
     df = timeseries_input_df.loc[plot_company]
     company_name = df.iloc[0]['CompanyName']
-    historical_data = df.set_index(date_col)[value_col]
+    historical_data = df.set_index(DATE_COL)[VALUE_COL]
 
     point_forecast = forecast_df[plot_company]['point_forecast']
     upper_forecast = forecast_df[plot_company]['upper_forecast']

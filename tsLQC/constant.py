@@ -1,9 +1,6 @@
-inputTableLocation = 'revenue_input_v3.csv'
 primary_key = ['CompanyID']
-COMPANY_LIST = ['ExeVir', 'Franklin', 'Optiqua', 'Micropharma']
-
-date_col = 'Date'
-value_col = 'Value'
+DATE_COL = 'Date'
+VALUE_COL = 'Value'
 
 autots_hyperparameter_tuning = False
 max_generations = 15

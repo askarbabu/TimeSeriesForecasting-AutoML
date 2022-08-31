@@ -2,7 +2,7 @@ from pandas import Series
 import numpy as np
 from autots import AutoTS
 from typing import Tuple
-from tsLQC.constant import date_col, value_col
+from tsLQC.constant import DATE_COL, VALUE_COL
 from statsmodels.tsa.seasonal import seasonal_decompose
 
 
@@ -25,8 +25,8 @@ def bad_forecast_handling(ts: Series, point_forecast: Series, model: AutoTS) -> 
                        model_list=['ETS'],
                        verbose=1,
                        num_validations=3)
-        model = model.fit(ts.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
-        point_forecast = model.predict(48).forecast[value_col]
+        model = model.fit(ts.reset_index(), date_col=DATE_COL, value_col=VALUE_COL, id_col=None)
+        point_forecast = model.predict(48).forecast[VALUE_COL]
 
     return point_forecast, model
 

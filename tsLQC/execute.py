@@ -3,7 +3,7 @@ from autots import AutoTS
 from typing import Tuple
 from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
-from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, date_col, value_col,\
+from tsLQC.constant import frequency, no_negatives, n_jobs, ensemble, DATE_COL, VALUE_COL,\
     validation_method_default, validation_points_default, autots_hyperparameter_tuning, metric_weighting, \
     max_generations, num_validations, models_to_validate, model_list, verbose
 from tsLQC.preprocess_input import outlier_treatment
@@ -32,7 +32,7 @@ def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tupl
                    verbose=verbose
                    )
     model = model.import_template(df, method='only')
-    model = model.fit(ts.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
+    model = model.fit(ts.reset_index(), date_col=DATE_COL, value_col=VALUE_COL, id_col=None)
     best_models = model.export_template(models='best', n=100, max_per_model_class=None, include_results=True)\
         .sort_values('Score', ignore_index=True)
 
@@ -54,7 +54,7 @@ def train_one_company(ts: pd.Series) -> pd.DataFrame:
 
 def train_all_companies(timeseries_input_df: pd.DataFrame) -> dict:
 
-    forecast_df = {i: train_one_company(ts=timeseries_input_df.loc[i].set_index(date_col)[value_col])
+    forecast_df = {i: train_one_company(ts=timeseries_input_df.loc[i].set_index(DATE_COL)[VALUE_COL])
                    for i in timeseries_input_df.index.unique()}
 
     return forecast_df

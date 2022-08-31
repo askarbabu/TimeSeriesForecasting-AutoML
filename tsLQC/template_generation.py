@@ -4,7 +4,7 @@ import pandas as pd
 from typing import Tuple
 from autots import AutoTS
 from autots.models.ensemble import EnsembleTemplateGenerator
-from tsLQC.constant import metric_weighting, verbose, date_col, value_col, n_jobs, frequency, models_to_validate,\
+from tsLQC.constant import metric_weighting, verbose, DATE_COL, VALUE_COL, n_jobs, frequency, models_to_validate,\
     no_negatives
 
 
@@ -62,7 +62,7 @@ def generate_ensemble_models(ts: pd.Series, model: AutoTS, best_simple_models: p
                                 )
 
         ensemble_model = ensemble_model.import_template(ens_temp, method='only')
-        ensemble_model = ensemble_model.fit(ts.reset_index(), date_col=date_col, value_col=value_col, id_col=None)
+        ensemble_model = ensemble_model.fit(ts.reset_index(), date_col=DATE_COL, value_col=VALUE_COL, id_col=None)
 
         best_ensemble_models = ensemble_model.export_template(models='best', n=100, max_per_model_class=None,
                                                               include_results=True)
