@@ -2,11 +2,12 @@ import logging
 import pandas as pd
 from autots import AutoTS
 from typing import Tuple
-from tsLQC.constant import forecast_period, confidence_interval, VALUE_COL
+from tsLQC.constant import forecast_period, VALUE_COL
 from tsLQC.prediction_interval import prediction_interval
 from tsLQC.curve_flat import _revenue_flat
 from tsLQC.postprocessing import bad_forecast_handling, noise_addition
 import json
+CONFIDENCE_INTERVAL = 0.90
 
 
 def forecasting_function(ts: pd.Series, model: AutoTS, best_models: pd.DataFrame) ->\
@@ -27,7 +28,7 @@ def forecasting_function(ts: pd.Series, model: AutoTS, best_models: pd.DataFrame
 
             logging.info(f'Forecasting using {model.best_model_name} model')
 
-            model_pred = model.predict(forecast_period, prediction_interval=confidence_interval)
+            model_pred = model.predict(forecast_period, prediction_interval=CONFIDENCE_INTERVAL)
             point_forecast = model_pred.forecast[VALUE_COL]
 
             point_forecast, model = bad_forecast_handling(ts, point_forecast, model)
