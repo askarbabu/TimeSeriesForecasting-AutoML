@@ -3,12 +3,15 @@ from autots import AutoTS
 from typing import Tuple
 from tsLQC.autots_hyperparameter_tuning import hyperparameter_tuning
 from tsLQC.forecasting import forecasting_function
-from tsLQC.constant import frequency, NO_NEGATIVES, n_jobs, DATE_COL, VALUE_COL,\
-                           autots_hyperparameter_tuning, METRIC_WEIGHTING, \
-                           max_generations, num_validations, models_to_validate, VERBOSE
+from tsLQC.constant import FREQUENCY, NO_NEGATIVES, N_JOBS, DATE_COL, VALUE_COL,\
+                           METRIC_WEIGHTING, MODELS_TO_VALIDATE, VERBOSE
 from tsLQC.preprocess_input import outlier_treatment
 from tsLQC.template_generation import template_generation, generate_ensemble_models
 
+
+AUTOTS_HYPERPARAMETER_TUNING = False
+MAX_GENERATIONS = 15
+NUM_VALIDATIONS = 2
 VALIDATION_POINTS_DEFAULT = 4
 VALIDATION_METHOD_DEFAULT = 'backward'
 MODEL_LIST = ['GLS', 'SeasonalNaive', 'GLM', 'ETS', 'WindowRegression', 'DatepartRegression',
@@ -27,15 +30,15 @@ def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tupl
         validation_points, validation_method = VALIDATION_POINTS_DEFAULT, VALIDATION_METHOD_DEFAULT
 
     model = AutoTS(forecast_length=validation_points,
-                   frequency=frequency,
-                   models_to_validate=models_to_validate,
+                   frequency=FREQUENCY,
+                   models_to_validate=MODELS_TO_VALIDATE,
                    no_negatives=NO_NEGATIVES,
                    ensemble=ENSEMBLE,
-                   max_generations=max_generations,
-                   num_validations=num_validations,
+                   max_generations=MAX_GENERATIONS,
+                   num_validations=NUM_VALIDATIONS,
                    validation_method=validation_method,
                    model_list=MODEL_LIST,
-                   n_jobs=n_jobs,
+                   n_jobs=N_JOBS,
                    metric_weighting=METRIC_WEIGHTING,
                    verbose=VERBOSE
                    )
@@ -50,7 +53,7 @@ def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tupl
 def train_one_company(ts: pd.Series) -> pd.DataFrame:
     try:
         ts = outlier_treatment(ts)
-        model, best_simple_models = modelling(ts, autots_hyperparameter_tuning=autots_hyperparameter_tuning)
+        model, best_simple_models = modelling(ts, autots_hyperparameter_tuning=AUTOTS_HYPERPARAMETER_TUNING)
         model, best_models = generate_ensemble_models(ts, model, best_simple_models)
         point_forecast, lower_forecast, upper_forecast = forecasting_function(ts, model, best_models)
         forecast_one_company = pd.concat([point_forecast, lower_forecast, upper_forecast], axis=1)

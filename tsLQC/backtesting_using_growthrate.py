@@ -1,6 +1,6 @@
 import logging
 from pandas import Series
-from tsLQC.constant import forecast_period, DATE_COL, VALUE_COL
+from tsLQC.constant import FORECAST_PERIOD, DATE_COL, VALUE_COL
 from autots import AutoTS
 from typing import Tuple
 
@@ -29,7 +29,7 @@ def backtesting(ts: Series, backtest_length: int, model: AutoTS) -> Tuple[float,
 
     temp_df[temp_df <= 0] = 0.1
     model = model.fit(temp_df.reset_index(), date_col=DATE_COL, value_col=VALUE_COL, id_col=None)
-    prediction = model.predict(forecast_period)
+    prediction = model.predict(FORECAST_PERIOD)
     forecast_autots = prediction.forecast[VALUE_COL]
 
     cumulative_forecasted_autots = forecast_autots.iloc[:backtest_length].sum()

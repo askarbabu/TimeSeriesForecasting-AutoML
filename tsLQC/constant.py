@@ -2,13 +2,10 @@ primary_key = ['CompanyID']
 DATE_COL = 'Date'
 VALUE_COL = 'Value'
 
-autots_hyperparameter_tuning = False
-max_generations = 15
-num_validations = 2
-models_to_validate = 0.20
-forecast_period = 48
-frequency = 'infer'
-n_jobs = 'auto'
+MODELS_TO_VALIDATE = 0.20
+FORECAST_PERIOD = 48
+FREQUENCY = 'infer'
+N_JOBS = 'auto'
 NO_NEGATIVES = True
 VERBOSE = -1
 

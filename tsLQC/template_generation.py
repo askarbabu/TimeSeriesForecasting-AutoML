@@ -4,8 +4,8 @@ import pandas as pd
 from typing import Tuple
 from autots import AutoTS
 from autots.models.ensemble import EnsembleTemplateGenerator
-from tsLQC.constant import METRIC_WEIGHTING, VERBOSE, DATE_COL, VALUE_COL, n_jobs, frequency, models_to_validate,\
-    NO_NEGATIVES
+from tsLQC.constant import METRIC_WEIGHTING, VERBOSE, DATE_COL,\
+    VALUE_COL, N_JOBS, FREQUENCY, MODELS_TO_VALIDATE, NO_NEGATIVES
 
 
 f = open('model_params.json', "r")
@@ -48,14 +48,14 @@ def generate_ensemble_models(ts: pd.Series, model: AutoTS, best_simple_models: p
     ens_temp = EnsembleTemplateGenerator(model.initial_results)
     try:
         ensemble_model = AutoTS(forecast_length=10,
-                                frequency=frequency,
-                                models_to_validate=models_to_validate,
+                                frequency=FREQUENCY,
+                                models_to_validate=MODELS_TO_VALIDATE,
                                 no_negatives=NO_NEGATIVES,
                                 ensemble='simple',
                                 max_generations=0,
                                 num_validations=3,
                                 validation_method='backward',
-                                n_jobs=n_jobs,
+                                n_jobs=N_JOBS,
                                 verbose=VERBOSE,
                                 metric_weighting=METRIC_WEIGHTING,
                                 models_mode='default'
