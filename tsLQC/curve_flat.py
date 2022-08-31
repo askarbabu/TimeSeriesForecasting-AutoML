@@ -5,7 +5,8 @@ import numpy as np
 from pandas import Series
 from scipy.optimize import curve_fit
 
-from tsLQC.constant import flattening_analysis_range, flattening_limit_multiplier
+FLATTENING_ANALYSIS_RANGE = 0.15
+FLATTENING_LIMIT_MULTIPLIER = 2.5
 
 
 def _revenue_flat(revenue: Series) -> Series:
@@ -34,7 +35,7 @@ class TimeSeriesFlattener:
 
         start_flattening_position = ts.index.get_loc(start_flattening_date)
 
-        step_delta = int(flattening_analysis_range * start_flattening_position)
+        step_delta = int(FLATTENING_ANALYSIS_RANGE * start_flattening_position)
         values2fit = ts.values[(start_flattening_position - step_delta):(start_flattening_position + step_delta)]
         if values2fit.size > 0:
             [p1, p2], params_covariance = curve_fit(f=_expv_func,
@@ -59,4 +60,4 @@ class TimeSeriesFlattener:
     @staticmethod
     def _find_start_flattening_index(ts: Series) -> date:
         ref = ts[:12].median()
-        return ts.loc[ts > flattening_limit_multiplier * ref].first_valid_index()
+        return ts.loc[ts > FLATTENING_LIMIT_MULTIPLIER * ref].first_valid_index()
