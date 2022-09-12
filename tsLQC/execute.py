@@ -9,7 +9,7 @@ from tsLQC.preprocess_input import outlier_treatment
 from tsLQC.template_generation import template_generation, generate_ensemble_models
 
 
-AUTOTS_HYPERPARAMETER_TUNING = False
+AUTOTS_HYPERPARAMETER_TUNING = True
 MAX_GENERATIONS = 15
 NUM_VALIDATIONS = 2
 VALIDATION_POINTS_DEFAULT = 4
@@ -22,7 +22,7 @@ MAX_NO_OF_BEST_MODELS = 100
 df = template_generation()
 
 
-def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = False) -> Tuple[AutoTS, pd.DataFrame]:
+def modelling(ts: pd.Series, autots_hyperparameter_tuning: bool = AUTOTS_HYPERPARAMETER_TUNING) -> Tuple[AutoTS, pd.DataFrame]:
 
     if autots_hyperparameter_tuning:
         validation_points, validation_method = hyperparameter_tuning(ts, 12)
