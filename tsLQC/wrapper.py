@@ -18,6 +18,8 @@ def preprocessing(timeseries_input_df: pd.DataFrame) -> pd.DataFrame:
     timeseries_input_df = timeseries_input_df.set_index(PRIMARY_KEY)
     timeseries_input_df.index = timeseries_input_df.index.astype(int).astype(str)
 
+    timeseries_input_df = timeseries_input_df.drop_duplicates()
+
     return timeseries_input_df
 
 
