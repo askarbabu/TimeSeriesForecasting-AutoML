@@ -3,6 +3,7 @@ from pandas import Series
 from autots import AutoTS
 from typing import Tuple
 from statsmodels.tsa.seasonal import seasonal_decompose
+from tsLQC.constant import VALUE_COL
 
 STD_DEV_ESTIMATION_LEN = 4
 Z_VALUE = 1.64
@@ -13,7 +14,7 @@ def prediction_interval(ts: Series, point_forecast: Series, model: AutoTS) -> Tu
     h = 1 + point_forecast.reset_index().index.values
 
     model.forecast_length = STD_DEV_ESTIMATION_LEN
-    back_forecast = model.back_forecast(n_splits='auto').forecast.iloc[-STD_DEV_ESTIMATION_LEN:]
+    back_forecast = model.back_forecast(n_splits='auto').forecast.iloc[-STD_DEV_ESTIMATION_LEN:][VALUE_COL]
     actual_values = ts.interpolate(limit_direction='both').iloc[-STD_DEV_ESTIMATION_LEN:]
     errors = back_forecast - actual_values
     std_dev_estimated_from_fit = errors.values.std()
