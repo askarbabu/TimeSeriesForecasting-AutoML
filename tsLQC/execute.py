@@ -9,7 +9,7 @@ from tsLQC.preprocess_input import outlier_treatment
 from tsLQC.template_generation import template_generation, generate_ensemble_models
 
 
-AUTOTS_HYPERPARAMETER_TUNING = True
+AUTOTS_HYPERPARAMETER_TUNING = False
 MAX_GENERATIONS = 15
 NUM_VALIDATIONS = 2
 VALIDATION_POINTS_DEFAULT = 4
